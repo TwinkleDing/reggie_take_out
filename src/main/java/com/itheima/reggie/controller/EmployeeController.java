@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,9 +27,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/employee")
 public class EmployeeController {
-
     @Autowired
     private EmployeeService employeeService;
+
+    private static final String ATTRIBUTE_NAME_EMPLOYEE = "employee";
+
 
     /**
      * 员工登录
@@ -63,7 +66,7 @@ public class EmployeeController {
         }
 
         // 登录成功
-        request.getSession().setAttribute("employee", emp.getId());
+        request.getSession().setAttribute(ATTRIBUTE_NAME_EMPLOYEE, emp.getId());
 
         return Request.success(emp);
     }
@@ -82,7 +85,7 @@ public class EmployeeController {
         employee.setCreateTime(LocalDateTime.now());
         employee.setUpdateTime(LocalDateTime.now());
 
-        Long empId = (long) request.getSession().getAttribute("employee");
+        Long empId = (long) request.getSession().getAttribute(ATTRIBUTE_NAME_EMPLOYEE);
         employee.setCreateUser(empId);
         employee.setUpdateUser(empId);
         employeeService.save(employee);
@@ -124,7 +127,7 @@ public class EmployeeController {
     @PutMapping
     public Request<String> update(HttpServletRequest request, @RequestBody Employee employee) {
 
-        Long emId = (Long) request.getSession().getAttribute("employee");
+        Long emId = (Long) request.getSession().getAttribute(ATTRIBUTE_NAME_EMPLOYEE);
         employee.setUpdateTime(LocalDateTime.now());
         employee.setUpdateUser(emId);
         employeeService.updateById(employee);
