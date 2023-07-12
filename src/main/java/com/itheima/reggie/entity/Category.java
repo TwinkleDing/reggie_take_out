@@ -9,50 +9,40 @@ import java.time.LocalDateTime;
 
 /**
  * @author TwinkleDing
+ * 分类
  */
 @Data
-public class Employee implements Serializable {
+public class Category implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     private Long id;
 
-    private String username;
+
+    /**
+     * 类型 1 菜品分类 2 套餐分类
+     */
+    private Integer type;
 
     private String name;
 
-    private String password;
+    private Integer sort;
 
-    private String phone;
-
-    private String sex;
-
-    private String idNumber;
-
-    private Integer status;
-
-    /**
-     * 插入时填充字段
-     */
     @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createTime;
 
-    /**
-     * 插入和更新时填充字段
-     */
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime updateTime;
 
-    /**
-     * 插入时填充字段
-     */
     @TableField(fill = FieldFill.INSERT)
     private Long createUser;
 
-    /**
-     * 插入和更新时填充字段
-     */
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private Long updateUser;
+
+    /**
+     * 是否刪除
+     */
+    private Integer isDeleted;
 
 }

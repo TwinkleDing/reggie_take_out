@@ -5,54 +5,51 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 /**
  * @author TwinkleDing
+ * 菜品
  */
 @Data
-public class Employee implements Serializable {
+public class Dish implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     private Long id;
 
-    private String username;
-
     private String name;
 
-    private String password;
+    private Long categoryId;
 
-    private String phone;
+    private BigDecimal price;
 
-    private String sex;
+    private String code;
 
-    private String idNumber;
+    private String image;
 
-    private Integer status;
+    private String description;
 
     /**
-     * 插入时填充字段
+     * //0 停售 1 起售
      */
+    private Integer status;
+
+    private Integer sort;
+
     @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createTime;
 
-    /**
-     * 插入和更新时填充字段
-     */
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime updateTime;
 
-    /**
-     * 插入时填充字段
-     */
     @TableField(fill = FieldFill.INSERT)
     private Long createUser;
 
-    /**
-     * 插入和更新时填充字段
-     */
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private Long updateUser;
+
+    private Integer isDeleted;
 
 }

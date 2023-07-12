@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @author TwinkleDing
+ * 员工信息
  */
 @Slf4j
 @RestController
@@ -50,16 +52,16 @@ public class EmployeeController {
 
         // 账户没有，返回失败
         if (emp == null) {
-            return Request.error("登录失败");
+            return Request.error("登录失败！");
         }
 
         // 账户有
         if (!emp.getPassword().equals(password)) {
-            return Request.error("登录失败");
+            return Request.error("登录失败！");
         }
 
         if (emp.getStatus() == 0) {
-            return Request.error("账号已禁用");
+            return Request.error("账号已禁用！");
         }
 
         // 登录成功
@@ -72,19 +74,13 @@ public class EmployeeController {
     public Request<String> logout(HttpServletRequest request) {
         // 清理session中的数据
         request.getSession().removeAttribute("employ");
-        return Request.success("退出成功");
+        return Request.success("退出成功！");
     }
 
     @PostMapping
-    public Request<String> save(HttpServletRequest request, @RequestBody Employee employee) {
+    public Request<String> save(@RequestBody Employee employee) {
 
         employee.setPassword(DigestUtils.md5DigestAsHex("123456".getBytes()));
-        employee.setCreateTime(LocalDateTime.now());
-        employee.setUpdateTime(LocalDateTime.now());
-
-        Long empId = (long) request.getSession().getAttribute("employee");
-        employee.setCreateUser(empId);
-        employee.setUpdateUser(empId);
         employeeService.save(employee);
 
         return Request.success("新增员工成功！");
@@ -129,7 +125,7 @@ public class EmployeeController {
         employee.setUpdateUser(emId);
         employeeService.updateById(employee);
 
-        return Request.success("员工信息修改成功");
+        return Request.success("员工信息修改成功！");
     }
 
     @GetMapping("/{id}")

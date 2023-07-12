@@ -31,4 +31,16 @@ public class GlobalExceptionHandler {
 
         return Request.error("失败了！");
     }
+
+
+    /**
+     * 进行异常处理方法
+     *
+     * @return 返回异常
+     */
+    @ExceptionHandler(CustomException.class)
+    public Request<String> exceptionHandler(CustomException ex) {
+        log.error(ex.getMessage());
+        return Request.error(ex.getMessage());
+    }
 }
