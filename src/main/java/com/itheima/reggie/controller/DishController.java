@@ -98,6 +98,7 @@ public class DishController {
 
     /**
      * 修改菜品信息
+     *
      * @param dishDto 菜品信息
      * @return 修改结果
      */
@@ -105,6 +106,23 @@ public class DishController {
     public Request<String> update(@RequestBody DishDto dishDto) {
         dishService.updateWithFlavor(dishDto);
         return Request.success("新增菜品成功成功！");
+    }
+
+    /**
+     * 根据条件查询对应的菜品数据
+     *
+     * @param dish 菜品信息
+     * @return
+     */
+    @GetMapping("/list")
+    public Request<List<Dish>> list(Dish dish) {
+        LambdaQueryWrapper<Dish> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(dish.getCategoryId() != null, Dish::getCategoryId, dish.getCategoryId());
+        queryWrapper.eq(Dish::getStatus, 1);
+        queryWrapper.orderByAsc(Dish::getSort).orderByDesc(Dish::getUpdateTime);
+
+        List<Dish> list = dishService.list(queryWrapper);
+        return Request.success(list);
     }
 
 }
