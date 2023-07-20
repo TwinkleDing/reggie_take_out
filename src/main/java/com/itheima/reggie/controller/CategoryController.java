@@ -8,6 +8,8 @@ import com.itheima.reggie.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * @author TwinkleDing
  * 分类管理
@@ -70,5 +72,21 @@ public class CategoryController {
         categoryService.updateById(category);
         return Request.success("修改分类信息成功！");
 
+    }
+
+    /**
+     * 根据条件查询分类
+     *
+     * @param category 分类
+     * @return 分类列表
+     */
+    @GetMapping("/list")
+    public Request<List<Category>> list(Category category) {
+        LambdaQueryWrapper<Category> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(category.getType() != null, Category::getType, category.getType());
+        queryWrapper.orderByAsc(Category::getSort).orderByDesc(Category::getUpdateTime);
+
+        List<Category> list = categoryService.list(queryWrapper);
+        return Request.success(list);
     }
 }
