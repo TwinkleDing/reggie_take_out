@@ -10,6 +10,7 @@ import com.itheima.reggie.mapper.SetmealMapper;
 import com.itheima.reggie.service.SetmealDishService;
 import com.itheima.reggie.service.SetmealService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -84,7 +85,7 @@ public class SetmealServiceImpl extends ServiceImpl<SetmealMapper, Setmeal> impl
     public void updateStatus(List<Long> ids, int status) {
         for (Long id : ids) {
             Setmeal setmeal = setmealService.getById(id);
-            if (!status.equals(setmeal.getStatus())) {
+            if (status != setmeal.getStatus()) {
                 setmeal.setStatus(status);
                 setmealService.updateById(setmeal);
             }

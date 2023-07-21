@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.itheima.reggie.common.Request;
 import com.itheima.reggie.dto.SetmealDto;
 import com.itheima.reggie.entity.Category;
+import com.itheima.reggie.entity.Employee;
 import com.itheima.reggie.entity.Setmeal;
 import com.itheima.reggie.service.CategoryService;
 import com.itheima.reggie.service.SetmealDishService;
@@ -107,6 +108,12 @@ public class SetmealController {
         } else {
             return Request.success("起售成功！");
         }
+    }
+
+    @GetMapping("/{id}")
+    public Request<Setmeal> get(@PathVariable Long id) {
+        Setmeal setmeal = setmealService.getById(id);
+        return Request.success(setmeal);
     }
 
 }
