@@ -91,4 +91,15 @@ public class SetmealServiceImpl extends ServiceImpl<SetmealMapper, Setmeal> impl
             }
         }
     }
+
+    /**
+     * 获取详情
+     * @param id id
+     * @return 详情
+     */
+    @Override
+    public SetmealDto getWithDish(Long id) {
+        SetmealDish setmealDish = setmealDishService.getById(id);
+        return null;
+    }
 }

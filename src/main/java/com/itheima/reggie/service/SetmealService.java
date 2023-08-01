@@ -32,4 +32,11 @@ public interface SetmealService extends IService<Setmeal> {
      * @param status 状态
      */
    public void updateStatus(List<Long> ids, int status);
+
+    /**
+     * 获取详情
+     * @param id id
+     * @return 详情
+     */
+    public SetmealDto getWithDish(Long id);
 }
