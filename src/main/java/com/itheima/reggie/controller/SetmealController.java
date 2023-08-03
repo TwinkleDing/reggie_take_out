@@ -1,12 +1,10 @@
 package com.itheima.reggie.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.itheima.reggie.common.Request;
 import com.itheima.reggie.dto.SetmealDto;
 import com.itheima.reggie.entity.Category;
-import com.itheima.reggie.entity.Employee;
 import com.itheima.reggie.entity.Setmeal;
 import com.itheima.reggie.entity.SetmealDish;
 import com.itheima.reggie.service.CategoryService;
@@ -18,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -115,13 +112,13 @@ public class SetmealController {
 
     @GetMapping("/{id}")
     public Request<SetmealDto> get(@PathVariable Long id) {
-        Setmeal setmeal = setmealService.getById(id);
-        LambdaQueryWrapper<SetmealDish> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(SetmealDish::getSetmealId, setmeal.getId());
-        List<SetmealDish> setmealDishList = setmealDishService.list(queryWrapper);
-        SetmealDto setmealDto = new SetmealDto();
-        BeanUtils.copyProperties(setmeal, setmealDto);
-        setmealDto.setSetmealDishes(setmealDishList);
+        SetmealDto setmealDto = setmealService.getWithDish(id);
         return Request.success(setmealDto);
+    }
+
+    @PutMapping
+    public Request<String> upload(@RequestBody SetmealDto setmealDto) {
+        setmealService.updateWithDish(setmealDto);
+        return Request.success("修改套餐成功！");
     }
 }

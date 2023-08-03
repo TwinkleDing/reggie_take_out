@@ -39,4 +39,10 @@ public interface SetmealService extends IService<Setmeal> {
      * @return 详情
      */
     public SetmealDto getWithDish(Long id);
+
+    /**
+     * 修改信息
+     * @param setmealDto 信息
+     */
+    void updateWithDish(SetmealDto setmealDto);
 }

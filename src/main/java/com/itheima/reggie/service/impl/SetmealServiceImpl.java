@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.itheima.reggie.common.CustomException;
 import com.itheima.reggie.dto.SetmealDto;
+import com.itheima.reggie.entity.DishFlavor;
 import com.itheima.reggie.entity.Setmeal;
 import com.itheima.reggie.entity.SetmealDish;
 import com.itheima.reggie.mapper.SetmealMapper;
@@ -94,12 +95,40 @@ public class SetmealServiceImpl extends ServiceImpl<SetmealMapper, Setmeal> impl
 
     /**
      * 获取详情
+     *
      * @param id id
      * @return 详情
      */
     @Override
     public SetmealDto getWithDish(Long id) {
-        SetmealDish setmealDish = setmealDishService.getById(id);
-        return null;
+        Setmeal setmeal = setmealService.getById(id);
+        LambdaQueryWrapper<SetmealDish> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(SetmealDish::getSetmealId, setmeal.getId());
+        List<SetmealDish> setmealDishList = setmealDishService.list(queryWrapper);
+        SetmealDto setmealDto = new SetmealDto();
+        BeanUtils.copyProperties(setmeal, setmealDto);
+        setmealDto.setSetmealDishes(setmealDishList);
+        return setmealDto;
+    }
+
+
+    /**
+     * 修改信息
+     *
+     * @param setmealDto 信息
+     */
+    @Override
+    public void updateWithDish(SetmealDto setmealDto) {
+        this.updateById(setmealDto);
+        LambdaQueryWrapper<SetmealDish> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(SetmealDish::getSetmealId, setmealDto.getId());
+        setmealDishService.remove(queryWrapper);
+        List<SetmealDish> setmealDishList = setmealDto.getSetmealDishes();
+        setmealDishList.stream().map((item) -> {
+            item.setSetmealId((setmealDto.getId()));
+            return item;
+        }).collect(Collectors.toList());
+        // 保存套餐和菜品的关联关系
+        setmealDishService.saveBatch(setmealDishList);
     }
 }
