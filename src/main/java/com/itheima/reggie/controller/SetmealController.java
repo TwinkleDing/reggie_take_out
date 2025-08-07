@@ -3,11 +3,13 @@ package com.itheima.reggie.controller;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.itheima.reggie.common.Request;
+import com.itheima.reggie.dto.DishDto;
 import com.itheima.reggie.dto.SetmealDto;
 import com.itheima.reggie.entity.Category;
+import com.itheima.reggie.entity.Dish;
 import com.itheima.reggie.entity.Setmeal;
-import com.itheima.reggie.entity.SetmealDish;
 import com.itheima.reggie.service.CategoryService;
+import com.itheima.reggie.service.DishService;
 import com.itheima.reggie.service.SetmealDishService;
 import com.itheima.reggie.service.SetmealService;
 import lombok.extern.slf4j.Slf4j;
@@ -36,6 +38,10 @@ public class SetmealController {
 
     @Autowired
     private CategoryService categoryService;
+
+
+    @Autowired
+    private DishService dishService;
 
     /**
      * 新增套餐
@@ -120,5 +126,11 @@ public class SetmealController {
     public Request<String> upload(@RequestBody SetmealDto setmealDto) {
         setmealService.updateWithDish(setmealDto);
         return Request.success("修改套餐成功！");
+    }
+
+    @GetMapping("/dish/{id}")
+    public Request<DishDto> getDish(@PathVariable Long id) {
+        DishDto dishDto = dishService.getByIdWithFlavor(id);
+        return Request.success(dishDto);
     }
 }
