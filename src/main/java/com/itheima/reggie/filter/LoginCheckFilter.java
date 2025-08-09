@@ -14,7 +14,7 @@ import java.io.IOException;
 
 /**
  * @author TwinkleDing
- * 检查用户是否完成登录
+ *         检查用户是否完成登录
  */
 @WebFilter(filterName = "LoginCheckFilter", urlPatterns = "/*")
 @Slf4j
@@ -23,21 +23,25 @@ public class LoginCheckFilter implements Filter {
     public static final AntPathMatcher PATH_MATCHER = new AntPathMatcher();
 
     @Override
-    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
+    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
+            throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
         String requestUri = request.getRequestURI();
 
-        String[] urls = new String[]{
+        String[] urls = new String[] {
                 "/employee/login",
                 "/employee/logout",
                 "/backend/**",
                 "/front/**",
-                "/common/**"
+                "/common/**",
+                "/user/sendMsg",
+                "/user/login"
         };
 
         boolean check = checkString(urls, requestUri);
         String employee = "employee";
+        String user = "user";
         if (check) {
             filterChain.doFilter(request, response);
             return;
@@ -47,6 +51,12 @@ public class LoginCheckFilter implements Filter {
             log.info("用户已登录，用户id为{}", request.getSession().getAttribute(employee));
             Long empId = (Long) request.getSession().getAttribute(employee);
             BaseContext.setCurrentId(empId);
+            filterChain.doFilter(request, response);
+            return;
+        } else if (request.getSession().getAttribute(user) != null) {
+            log.info("用户已登录，用户id为{}", request.getSession().getAttribute(user));
+            Long userId = (Long) request.getSession().getAttribute(user);
+            BaseContext.setCurrentId(userId);
             filterChain.doFilter(request, response);
             return;
         }
