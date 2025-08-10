@@ -4,6 +4,9 @@ import java.io.Serializable;
 
 import lombok.Data;
 
+/**
+ * @author TwinkleDing
+ */
 @Data
 public class User implements Serializable {
 
@@ -13,7 +16,7 @@ public class User implements Serializable {
 
     private String phone;
 
-    private String set;
+    private String sex;
 
     private String idNumber;
 
