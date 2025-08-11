@@ -4,6 +4,7 @@ import com.itheima.reggie.enums.OrderStatusEnum;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 /**
@@ -29,19 +30,29 @@ public class Order implements Serializable {
     }
 
     /**
-     * 用户名
+     * 用户Id
      */
-    private String userName;
+    private String userId;
 
     /**
-     * 收货人
+     * 用户姓名
      */
-    private String consignee;
+    private String userName;
 
     /**
      * 手机号
      */
     private String phone;
+
+    /**
+     * 联系人
+     */
+    private String consignee;
+
+    /**
+     * 地址ID
+     */
+    private String addressBookId;
 
     /**
      * 地址
@@ -51,21 +62,22 @@ public class Order implements Serializable {
     /**
      * 下单时间
      */
-    private String orderTime;
+    private LocalDateTime orderTime;
+
+    private LocalDateTime checkoutTime;
 
     /**
-     * 实收金额
+     * 支付方式
+     */
+    private Integer payMethod;
+
+    /**
+     * 订单金额
      */
     private String amount;
 
     /**
-     * 菜品列表
+     * 备注
      */
-    private ArrayList<Dish> dishList;
-
-    /**
-     * 套餐列表
-     */
-    private ArrayList<Setmeal> setmeal;
-
+    private String remark;
 }

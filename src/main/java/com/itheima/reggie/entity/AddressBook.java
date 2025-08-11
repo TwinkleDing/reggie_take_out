@@ -43,7 +43,7 @@ public class AddressBook {
     private String label;
 
     // 默认 0 否 1 是
-    private Integer isDeafut;
+    private Integer isDefault;
 
     @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createTime;

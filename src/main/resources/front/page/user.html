@@ -74,7 +74,7 @@
     <!-- 引入组件库 -->
     <script src="../../backend/plugins/element-ui/index.js"></script>
     <!-- 引入vant组件 -->
-    <script src="./../js/vant.min.js"></script>    
+    <script src="./../js/vant.min.js"></script>
     <!--不同屏幕尺寸根字体设置-->
     <script src="./../js/base.js"></script>
     <!-- 引入axios -->
@@ -117,12 +117,12 @@
                 toAddressPage(){
                     window.requestAnimationFrame(()=>{
                         window.location.href = '/front/page/address.html'
-                    })  
+                    })
                 },
                 toOrderPage(){
                     window.requestAnimationFrame(()=>{
                         window.location.href = '/front/page/order.html'
-                    }) 
+                    })
                 },
                 initData(){
                     this.getLatestOrder()
@@ -173,7 +173,7 @@
                     if(res.code === 1){
                         window.requestAnimationFrame(()=>{
                             window.location.href = '/front/index.html'
-                        }) 
+                        })
                     }else{
                         this.$notify({ type:'warning', message:res.msg});
                     }
@@ -183,10 +183,10 @@
                     if(res.code === 1){
                         window.requestAnimationFrame(()=>{
                             window.location.href = '/front/page/login.html'
-                        }) 
+                        })
                     }else{
                         this.$notify({ type:'warning', message:res.msg});
-                    }                
+                    }
                 }
             }
         })
