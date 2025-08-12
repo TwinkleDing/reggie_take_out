@@ -2,12 +2,9 @@ package com.itheima.reggie.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.itheima.reggie.common.BaseContext;
 import com.itheima.reggie.common.Request;
-import com.itheima.reggie.entity.AddressBook;
-import com.itheima.reggie.entity.Employee;
-import com.itheima.reggie.entity.Order;
-import com.itheima.reggie.service.OrderService;
+import com.itheima.reggie.entity.Orders;
+import com.itheima.reggie.service.OrdersService;
 import com.itheima.reggie.service.SetmealService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,13 +21,13 @@ import javax.servlet.http.HttpServletRequest;
  */
 @RestController
 @RequestMapping("/order")
-public class OrderComtroller {
+public class OrdersController {
 
     @Autowired
     private SetmealService setmealService;
 
     @Autowired
-    private OrderService orderService;
+    private OrdersService orderService;
 
     /**
      * 订单分页查询
@@ -41,8 +38,8 @@ public class OrderComtroller {
      * @return 订单列表
      */
     @GetMapping("/page")
-    public Request<Page<Order>> getList(int page, int pageSize, Long number) {
-        Page<Order> pageInfo = new Page<>(page, pageSize);
+    public Request<Page<Orders>> getList(int page, int pageSize, Long number) {
+        Page<Orders> pageInfo = new Page<>(page, pageSize);
 
         return Request.success(pageInfo);
     }
@@ -55,15 +52,15 @@ public class OrderComtroller {
      * @return 订单列表
      */
     @GetMapping("/userPage")
-    public Request<Page<Order>> userList(ServletRequest servletRequest, int page, int pageSize) {
+    public Request<Page<Orders>> userList(ServletRequest servletRequest, int page, int pageSize) {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         String userId = (String) request.getSession().getAttribute("user");
 
-        Page<Order> pageInfo = new Page<>(page, pageSize);
-        LambdaQueryWrapper<Order> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(Order::getUserId, userId);
-        queryWrapper.orderByDesc(Order::getOrderTime);
-        Page<Order> result = orderService.page(pageInfo, queryWrapper);
+        Page<Orders> pageInfo = new Page<>(page, pageSize);
+        LambdaQueryWrapper<Orders> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(Orders::getUserId, userId);
+        queryWrapper.orderByDesc(Orders::getOrderTime);
+        Page<Orders> result = orderService.page(pageInfo, queryWrapper);
 
         return Request.success(result);
     }

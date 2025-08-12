@@ -7,6 +7,9 @@ import com.itheima.reggie.entity.User;
 import com.itheima.reggie.mapper.UserMapper;
 import com.itheima.reggie.service.UserService;
 
+/**
+ * @author TwinkleDing
+ */
 @Service
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
 
