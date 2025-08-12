@@ -6,6 +6,7 @@ import com.itheima.reggie.common.Request;
 import com.itheima.reggie.dto.DishDto;
 import com.itheima.reggie.entity.Category;
 import com.itheima.reggie.entity.Dish;
+import com.itheima.reggie.entity.DishFlavor;
 import com.itheima.reggie.service.CategoryService;
 import com.itheima.reggie.service.DishFlavorService;
 import com.itheima.reggie.service.DishService;
@@ -115,6 +116,38 @@ public class DishController {
      * @return
      */
     @GetMapping("/list")
+    public Request<List<DishDto>> list(Dish dish) {
+        LambdaQueryWrapper<Dish> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(dish.getCategoryId() != null, Dish::getCategoryId, dish.getCategoryId());
+        queryWrapper.eq(Dish::getStatus, 1);
+        queryWrapper.orderByAsc(Dish::getSort).orderByDesc(Dish::getUpdateTime);
+
+        List<Dish> list = dishService.list(queryWrapper);
+
+        List<DishDto> dishDtoList = list.stream().map((item) -> {
+            DishDto dishDto = new DishDto();
+            BeanUtils.copyProperties(item, dishDto);
+
+            Long categoryId = item.getCategoryId();
+            Category category = categoryService.getById(categoryId);
+            String categoryName = category.getName();
+            dishDto.setCategoryName(categoryName);
+            // 当前菜品Id
+            Long dishId = item.getId();
+            LambdaQueryWrapper<DishFlavor> wrapper = new LambdaQueryWrapper<>();
+            wrapper.eq(DishFlavor::getDishId, dishId);
+            // SQL: select * from dish_flavor where dish_id = ?
+            List<DishFlavor> dishFlavorList = dishFlavorService.list(wrapper);
+            dishDto.setFlavors(dishFlavorList);
+
+            return dishDto;
+        }).collect(Collectors.toList());
+
+        return Request.success(dishDtoList);
+    }
+
+    /*
+    @GetMapping("/list")
     public Request<List<Dish>> list(Dish dish) {
         LambdaQueryWrapper<Dish> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(dish.getCategoryId() != null, Dish::getCategoryId, dish.getCategoryId());
@@ -124,5 +157,7 @@ public class DishController {
         List<Dish> list = dishService.list(queryWrapper);
         return Request.success(list);
     }
+    *
+     */
 
 }

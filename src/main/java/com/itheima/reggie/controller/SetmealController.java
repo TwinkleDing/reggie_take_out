@@ -51,7 +51,6 @@ public class SetmealController {
      */
     @PostMapping
     public Request<String> save(@RequestBody SetmealDto setmealDto) {
-        log.info("asdasd", setmealDto);
         setmealService.saveWithDish(setmealDto);
         return Request.success("新增套餐成功！");
     }
@@ -132,5 +131,23 @@ public class SetmealController {
     public Request<DishDto> getDish(@PathVariable Long id) {
         DishDto dishDto = dishService.getByIdWithFlavor(id);
         return Request.success(dishDto);
+    }
+
+    /**
+     * 根据条件查询套餐
+     *
+     * @param setmeal
+     * @return
+     */
+    @GetMapping("/list")
+    public Request<List<Setmeal>> list(Setmeal setmeal) {
+        LambdaQueryWrapper<Setmeal> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(setmeal.getCategoryId() != null, Setmeal::getCategoryId, setmeal.getCategoryId());
+        queryWrapper.eq(setmeal.getStatus() != null, Setmeal::getStatus, setmeal.getStatus());
+        queryWrapper.orderByDesc(Setmeal::getUpdateTime);
+
+        List<Setmeal> list = setmealService.list(queryWrapper);
+
+        return Request.success(list);
     }
 }

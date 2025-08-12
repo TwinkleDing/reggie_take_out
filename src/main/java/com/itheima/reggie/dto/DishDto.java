@@ -7,9 +7,15 @@ import lombok.Data;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author TwinkleDing
+ */
 @Data
 public class DishDto extends Dish {
 
+    /**
+     * 菜品对应的口味数据
+     */
     private List<DishFlavor> flavors = new ArrayList<>();
 
     private String categoryName;
