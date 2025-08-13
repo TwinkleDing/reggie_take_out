@@ -5,6 +5,9 @@ import org.apache.ibatis.annotations.Mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.itheima.reggie.entity.User;
 
+/**
+ * @author TwinkleDing
+ */
 @Mapper
 public interface UserMapper extends BaseMapper<User> {
 
