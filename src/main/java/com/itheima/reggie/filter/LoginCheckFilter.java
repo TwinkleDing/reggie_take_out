@@ -14,7 +14,7 @@ import java.io.IOException;
 
 /**
  * @author TwinkleDing
- *         检查用户是否完成登录
+ * 检查用户是否完成登录
  */
 @WebFilter(filterName = "LoginCheckFilter", urlPatterns = "/*")
 @Slf4j
@@ -29,7 +29,7 @@ public class LoginCheckFilter implements Filter {
         HttpServletResponse response = (HttpServletResponse) servletResponse;
         String requestUri = request.getRequestURI();
 
-        String[] urls = new String[] {
+        String[] urls = new String[]{
                 "/employee/login",
                 "/employee/logout",
                 "/backend/**",
@@ -55,9 +55,9 @@ public class LoginCheckFilter implements Filter {
             return;
         } else if (request.getSession().getAttribute(user) != null) {
             log.info("用户已登录，用户id为{}", request.getSession().getAttribute(user));
-            String userId = (String) request.getSession().getAttribute(user);
+            Long userId = (Long) request.getSession().getAttribute(user);
             log.info("用户已登录，用户id为{}", userId);
-            BaseContext.setCurrentId(Long.valueOf(userId));
+            BaseContext.setCurrentId(userId);
             filterChain.doFilter(request, response);
             return;
         }

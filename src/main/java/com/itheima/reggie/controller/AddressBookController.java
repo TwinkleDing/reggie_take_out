@@ -34,7 +34,6 @@ public class AddressBookController {
     @PostMapping
     public Request<AddressBook> save(@RequestBody AddressBook addressBook) {
         addressBook.setUserId(BaseContext.getCurrentId());
-        log.info("addressBook:{}", addressBook);
         addressBookService.save(addressBook);
         return Request.success(addressBook);
     }
@@ -59,9 +58,8 @@ public class AddressBookController {
     /**
      * 设置默认地址
      */
-    @PutMapping("default")
+    @PutMapping("/default")
     public Request<AddressBook> setDefault(@RequestBody AddressBook addressBook) {
-        log.info("addressBook", addressBook);
         LambdaUpdateWrapper<AddressBook> wrapper = new LambdaUpdateWrapper<>();
         wrapper.eq(AddressBook::getUserId, BaseContext.getCurrentId());
         wrapper.set(AddressBook::getIsDefault, 0);
@@ -90,17 +88,17 @@ public class AddressBookController {
     /**
      * 查询默认地址
      */
-    @GetMapping("default")
+    @GetMapping("/default")
     public Request<AddressBook> getDefault() {
         LambdaQueryWrapper<AddressBook> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(AddressBook::getUserId, BaseContext.getCurrentId());
         queryWrapper.eq(AddressBook::getIsDefault, 1);
 
         // SQL select * from address_book where user_id = ? and is_default = 1;
-        AddressBook addressBook = addressBookService.getById(queryWrapper);
+        AddressBook addressBook = addressBookService.getOne(queryWrapper);
 
         if (null == addressBook) {
-            return Request.error("没有找到该对象");
+            return Request.error("当前用户没有设置默认地址！");
         } else {
             return Request.success(addressBook);
         }
@@ -112,8 +110,6 @@ public class AddressBookController {
     @GetMapping("/list")
     public Request<List<AddressBook>> list(AddressBook addressBook) {
         addressBook.setUserId(BaseContext.getCurrentId());
-        log.info("addressBook", addressBook);
-
         // 条件构造器
         LambdaQueryWrapper<AddressBook> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(null != addressBook.getUserId(), AddressBook::getUserId, addressBook.getUserId());

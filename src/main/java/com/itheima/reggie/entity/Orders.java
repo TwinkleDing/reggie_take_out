@@ -1,9 +1,12 @@
 package com.itheima.reggie.entity;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.itheima.reggie.enums.OrderStatusEnum;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 /**
@@ -16,15 +19,21 @@ public class Orders implements Serializable {
 
     private Long id;
 
-    private Long number;
+    /**
+     * 订单号
+     */
+    private String number;
 
-    private OrderStatusEnum status;
+    /**
+     * 订单状态
+     */
+    private Integer status;
 
-    public OrderStatusEnum getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(OrderStatusEnum status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 
@@ -51,7 +60,7 @@ public class Orders implements Serializable {
     /**
      * 地址ID
      */
-    private String addressBookId;
+    private Long addressBookId;
 
     /**
      * 地址
@@ -63,6 +72,9 @@ public class Orders implements Serializable {
      */
     private LocalDateTime orderTime;
 
+    /**
+     * 结账时间
+     */
     private LocalDateTime checkoutTime;
 
     /**
@@ -73,10 +85,34 @@ public class Orders implements Serializable {
     /**
      * 订单金额
      */
-    private String amount;
+    private BigDecimal amount;
 
     /**
      * 备注
      */
     private String remark;
+
+    /**
+     * 插入时填充字段
+     */
+    @TableField(fill = FieldFill.INSERT)
+    private LocalDateTime createTime;
+
+    /**
+     * 插入和更新时填充字段
+     */
+    @TableField(fill = FieldFill.INSERT_UPDATE)
+    private LocalDateTime updateTime;
+
+    /**
+     * 插入时填充字段
+     */
+    @TableField(fill = FieldFill.INSERT)
+    private Long createUser;
+
+    /**
+     * 插入和更新时填充字段
+     */
+    @TableField(fill = FieldFill.INSERT_UPDATE)
+    private Long updateUser;
 }

@@ -1,12 +1,12 @@
 package com.itheima.reggie.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.itheima.reggie.entity.Orders;
+import com.itheima.reggie.entity.OrderDetail;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
  * @author TwinkleDing
  */
 @Mapper
-public interface OrdersMapper extends BaseMapper<Orders> {
+public interface OrderDetailMapper extends BaseMapper<OrderDetail> {
 }

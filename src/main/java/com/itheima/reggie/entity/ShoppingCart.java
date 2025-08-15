@@ -30,11 +30,20 @@ public class ShoppingCart implements Serializable {
 
     private String dishFlavor;
 
-    private int number;
+    private Integer number;
 
     private BigDecimal amount;
 
     @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createTime;
+
+    @TableField(fill = FieldFill.INSERT)
+    private LocalDateTime updateTime;
+
+    @TableField(fill = FieldFill.INSERT)
+    private Long createUser;
+
+    @TableField(fill = FieldFill.INSERT_UPDATE)
+    private Long updateUser;
 
 }

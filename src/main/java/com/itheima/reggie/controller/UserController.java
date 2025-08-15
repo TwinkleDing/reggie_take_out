@@ -42,7 +42,7 @@ public class UserController {
             user.setStatus(1);
             userService.save(user);
         }
-        request.getSession().setAttribute("user", user.getPhone());
+        request.getSession().setAttribute("user", user.getId());
 
         return Request.success(user);
     }
