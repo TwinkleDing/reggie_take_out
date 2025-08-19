@@ -1,12 +1,14 @@
 package com.itheima.reggie.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.itheima.reggie.common.Request;
 import com.itheima.reggie.dto.DishDto;
 import com.itheima.reggie.entity.Category;
 import com.itheima.reggie.entity.Dish;
 import com.itheima.reggie.entity.DishFlavor;
+import com.itheima.reggie.entity.Orders;
 import com.itheima.reggie.service.CategoryService;
 import com.itheima.reggie.service.DishFlavorService;
 import com.itheima.reggie.service.DishService;
@@ -14,6 +16,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -159,5 +162,21 @@ public class DishController {
     }
     *
      */
+
+    /**
+     * 修改菜品状态
+     *
+     * @param ids id
+     * @return 修改成功
+     */
+    @PostMapping("/status/{status}")
+    public Request<String> changeStatus(@RequestParam List<Long> ids, @PathVariable Integer status) {
+        dishService.updateStatus(ids, status);
+        if (status == 0) {
+            return Request.success("停售成功！");
+        } else {
+            return Request.success("起售成功！");
+        }
+    };
 
 }

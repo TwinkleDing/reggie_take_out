@@ -1,6 +1,7 @@
 package com.itheima.reggie.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.itheima.reggie.common.Request;
 import com.itheima.reggie.dto.OrderDto;
@@ -47,11 +48,34 @@ public class OrdersController {
      * @return 订单列表
      */
     @GetMapping("/page")
-    public Request<Page<Orders>> getList(int page, int pageSize, Long number) {
+    public Request<Page<Orders>> getList(int page, int pageSize, String number) {
+        LambdaQueryWrapper<Orders> queryWrapper = new LambdaQueryWrapper<>();
+        if (number != null) {
+            queryWrapper.like(Orders::getNumber, number);
+        }
+        ;
         Page<Orders> pageInfo = new Page<>(page, pageSize);
+        queryWrapper.orderByDesc(Orders::getOrderTime);
+        List<Orders> orderList = orderService.list(queryWrapper);
+        pageInfo.setRecords(orderList);
 
         return Request.success(pageInfo);
     }
+
+    /**
+     * 更新订单状态
+     *
+     * @param orders 订单
+     * @return 订单
+     */
+    @PutMapping
+    public Request<Orders> updateOrders(@RequestBody Orders orders) {
+        LambdaUpdateWrapper<Orders> wrapper = new LambdaUpdateWrapper<>();
+        wrapper.eq(Orders::getId, orders.getId());
+        wrapper.set(Orders::getStatus, orders.getStatus());
+        orderService.update(wrapper);
+        return Request.success(orders);
+    };
 
     /**
      * 用户订单查询
@@ -69,11 +93,11 @@ public class OrdersController {
         queryWrapper.orderByDesc(Orders::getOrderTime);
 
         List<Orders> list = orderService.list(queryWrapper);
-        List<OrderDto> orderDtoList = list.stream().map((item)->{
+        List<OrderDto> orderDtoList = list.stream().map((item) -> {
             OrderDto orderDto = new OrderDto();
             BeanUtils.copyProperties(item, orderDto);
             LambdaQueryWrapper<OrderDetail> wrapper = new LambdaQueryWrapper<>();
-            wrapper.eq(OrderDetail::getOrderId,item.getId());
+            wrapper.eq(OrderDetail::getOrderId, item.getId());
             List<OrderDetail> orderDetails = orderDetailService.list(wrapper);
             orderDto.setOrderDetails(orderDetails);
             return orderDto;

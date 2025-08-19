@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.itheima.reggie.dto.DishDto;
 import com.itheima.reggie.entity.Dish;
 
+import java.util.List;
+
 /**
  * @author TwinkleDing
  */
@@ -30,4 +32,7 @@ public interface DishService extends IService<Dish> {
      * @param dishDto 信息
      */
     public void updateWithFlavor(DishDto dishDto);
+
+    public void updateStatus(List<Long> ids, int status);
+
 }
